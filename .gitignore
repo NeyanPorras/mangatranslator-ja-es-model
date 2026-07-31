@@ -1,0 +1,14 @@
+# Release outputs and model binaries stay out of Git.
+dist/
+release/
+*.onnx
+*.spm
+*.bin
+*.zip
+*.tar
+*.tar.gz
+
+# Local tooling
+__pycache__/
+*.py[cod]
+.venv/

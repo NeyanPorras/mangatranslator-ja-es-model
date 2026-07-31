@@ -1,0 +1,13 @@
+MangaTranslator Japanese-to-Spanish Model
+
+This distribution includes a dynamically quantized derivative of
+Helsinki-NLP/opus-mt-ja-es, published by Helsinki-NLP under the Apache License
+2.0. The source model is pinned to revision:
+d1693e4d2bc285d02653ff6438fe21e2b3c6025e
+
+Source model: https://huggingface.co/Helsinki-NLP/opus-mt-ja-es
+OPUS-MT training project: https://github.com/Helsinki-NLP/OPUS-MT-train
+
+The quantized ONNX graphs and release metadata are distributed under the
+Apache License 2.0. This NOTICE does not imply production approval or quality
+certification by Helsinki-NLP.

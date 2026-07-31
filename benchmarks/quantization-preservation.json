@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "synthetic_non_production_evidence",
+  "baseline": "FP32 output is a numerical preservation baseline, not a semantic gold translation.",
+  "corpus": {
+    "origin": "Agent-authored synthetic Japanese manga-dialogue probes; no published translations were copied.",
+    "samples": 32,
+    "sha256": "c6bf13350928da1fa488982f399cdb6eb453baf21645f206cd8be383a10d5adc"
+  },
+  "candidate": "int8-pertensor-qoperator",
+  "metrics": {
+    "exact_text": "16/32",
+    "mean_character_similarity": 0.8851190052949468,
+    "mean_token_similarity": 0.8616876467991503,
+    "omission_heuristic_flags": 0,
+    "deterministic_repeats": "32/32",
+    "runtime_bundle_bytes": 144594126,
+    "host_median_generation_ms": 122.6017992494235,
+    "host_rss_load_delta_mib": 344.94140625,
+    "host_max_process_rss_mib": 702.67578125
+  },
+  "known_regressions": [
+    {
+      "id": "short-03",
+      "input": "まさか…",
+      "fp32_baseline": "No puede ser.",
+      "int8_candidate": "No, no, no.",
+      "issue": "repetition"
+    }
+  ],
+  "required_gates": [
+    "Human semantic evaluation on representative manga dialogue",
+    "Android API 29 and API 36 execution",
+    "On-device latency, peak RSS, cancellation, and repeated-page profiling"
+  ],
+  "evidence": {
+    "lab_report_sha256": "bb4f74534ce3fb04a74e81cda2edadbf5444e5c4f35a12c813fb32ff0a143850",
+    "quantization_report_sha256": "ddfb01172fc7f1b2fca292f0835acb256bdae62a93c2407c0b011b36f988ca29",
+    "benchmark_result_sha256": "189e2d1b88c31ae7900fd763d7a3509705cbf09f90a633e6ab9e4e6eeef86293",
+    "benchmark_summary_sha256": "d172f2e293beea04fddf5dfd3b4ca8bbe2a1211d35936598934b6207646a33ac"
+  }
+}

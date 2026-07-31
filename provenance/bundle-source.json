@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "release_tag": "v0.1.0-qa",
+  "source_model": {
+    "repository": "Helsinki-NLP/opus-mt-ja-es",
+    "revision": "d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "revision_url": "https://huggingface.co/Helsinki-NLP/opus-mt-ja-es/tree/d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "declared_license": "Apache-2.0"
+  },
+  "quantization": {
+    "format": "QOperator",
+    "mode": "IntegerOps",
+    "static": false,
+    "activation_type": "QUInt8",
+    "weight_type": "QInt8",
+    "per_channel": false,
+    "reduce_range": false,
+    "onnx_opset": 17,
+    "onnxruntime_validation_version": "1.21.1",
+    "ort_config_path": "provenance/ort_config.json",
+    "ort_config_sha256": "2012e7b3f7d4d5d9a8b18682b3e5ec647fe60f15e0ccd1ed62eb247f3b8b8cf7",
+    "ort_config_bytes": 763
+  },
+  "runtime_files": [
+    {
+      "source": "onnx-int8-pertensor/encoder_model_quantized.onnx",
+      "archive_name": "encoder_model_quantized.onnx",
+      "bytes": 51198766,
+      "sha256": "a0247e2f759f9936e5a0562d4508cdb60d1351dbf8f3f6558ca316c26c9ce150"
+    },
+    {
+      "source": "onnx-int8-pertensor/decoder_model_merged_quantized.onnx",
+      "archive_name": "decoder_model_merged_quantized.onnx",
+      "bytes": 90193075,
+      "sha256": "945946456194f97bc2ef10cb694e70f23c4da84bcd09eb0f832baa16db787384"
+    },
+    {
+      "source": "source-model/source.spm",
+      "archive_name": "source.spm",
+      "bytes": 787910,
+      "sha256": "15b2cf3eb78a63770f22f84c4530d75fd8c35709fcb7155df2ec6a38952f79e2"
+    },
+    {
+      "source": "source-model/target.spm",
+      "archive_name": "target.spm",
+      "bytes": 829324,
+      "sha256": "981ffc3205f62084cd5b0d6db0f110c2cfa17a3d8822d6708582998308f298f4"
+    },
+    {
+      "source": "source-model/vocab.json",
+      "archive_name": "vocab.json",
+      "bytes": 1583335,
+      "sha256": "26472f360be20695958c4fb31ce8e34c20b1314054e36210484e8e327f1ba458"
+    },
+    {
+      "source": "source-model/tokenizer_config.json",
+      "archive_name": "tokenizer_config.json",
+      "bytes": 42,
+      "sha256": "e52bdcf2c0167c48f939ed29bad8f2c77f4c7dd3db5a370f434bb554a252a9b7"
+    },
+    {
+      "source": "source-model/generation_config.json",
+      "archive_name": "generation_config.json",
+      "bytes": 293,
+      "sha256": "ab1d31290980dae9faa6f34bfb05d72e0a46e9f8a521dd58b088be91d19e6cf1"
+    },
+    {
+      "source": "source-model/config.json",
+      "archive_name": "config.json",
+      "bytes": 1381,
+      "sha256": "8575803ec5c80a7c6ef08f0203fe2ea3c2b1dfd425d1e34364ea6550b0472cdb"
+    }
+  ],
+  "runtime_files_bytes": 144594126
+}

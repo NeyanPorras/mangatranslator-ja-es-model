@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "release": {
+    "tag": "v0.1.0-qa",
+    "status": "experimental_qa_candidate",
+    "production_approved": false,
+    "release_page_url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/tag/v0.1.0-qa",
+    "manifest_url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.0-qa/mangatranslator-ja-es-model-v0.1.0-qa.manifest.json"
+  },
+  "model": {
+    "source_repository": "Helsinki-NLP/opus-mt-ja-es",
+    "source_revision": "d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "source_revision_url": "https://huggingface.co/Helsinki-NLP/opus-mt-ja-es/tree/d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "source_language": "ja",
+    "target_language": "es",
+    "architecture": "Marian",
+    "declared_license": "Apache-2.0",
+    "quantization": {
+      "format": "QOperator",
+      "mode": "IntegerOps",
+      "static": false,
+      "activation_type": "QUInt8",
+      "weight_type": "QInt8",
+      "per_channel": false,
+      "reduce_range": false,
+      "onnx_opset": 17,
+      "onnxruntime_validation_version": "1.21.1",
+      "ort_config_path": "provenance/ort_config.json",
+      "ort_config_sha256": "2012e7b3f7d4d5d9a8b18682b3e5ec647fe60f15e0ccd1ed62eb247f3b8b8cf7",
+      "ort_config_bytes": 763
+    },
+    "generation": {
+      "num_beams": 6,
+      "max_length": 512,
+      "decoder_start_token_id": 61917,
+      "pad_token_id": 61917,
+      "eos_token_id": 0,
+      "renormalize_logits": true
+    }
+  },
+  "asset": {
+    "name": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip",
+    "url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.0-qa/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip",
+    "archive_format": "zip",
+    "compression": "stored",
+    "deterministic_timestamp": "1980-01-01T00:00:00Z",
+    "root_directory": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa",
+    "bytes": 144612320,
+    "sha256": "10da202dfe33204d3752ef7a6eb4721de2418f5a4e3ff1750d253174f6717760",
+    "runtime_files_bytes": 144594126,
+    "files": [
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/LICENSE",
+        "role": "license",
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/MODEL_CARD.md",
+        "role": "model_card",
+        "bytes": 3657,
+        "sha256": "0fd1f46802c9ca78254ac0a7bbab0f99d7ad4fa78ac2eaf0ab2d9b797b444805"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/NOTICE",
+        "role": "notice",
+        "bytes": 593,
+        "sha256": "c1ddd9b10c9f738908305b5b57ed77454cba39e4f9e72157dd51db7b7755ca38"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/config.json",
+        "role": "runtime",
+        "bytes": 1381,
+        "sha256": "8575803ec5c80a7c6ef08f0203fe2ea3c2b1dfd425d1e34364ea6550b0472cdb"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/decoder_model_merged_quantized.onnx",
+        "role": "runtime",
+        "bytes": 90193075,
+        "sha256": "945946456194f97bc2ef10cb694e70f23c4da84bcd09eb0f832baa16db787384"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/encoder_model_quantized.onnx",
+        "role": "runtime",
+        "bytes": 51198766,
+        "sha256": "a0247e2f759f9936e5a0562d4508cdb60d1351dbf8f3f6558ca316c26c9ce150"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/generation_config.json",
+        "role": "runtime",
+        "bytes": 293,
+        "sha256": "ab1d31290980dae9faa6f34bfb05d72e0a46e9f8a521dd58b088be91d19e6cf1"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/source.spm",
+        "role": "runtime",
+        "bytes": 787910,
+        "sha256": "15b2cf3eb78a63770f22f84c4530d75fd8c35709fcb7155df2ec6a38952f79e2"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/target.spm",
+        "role": "runtime",
+        "bytes": 829324,
+        "sha256": "981ffc3205f62084cd5b0d6db0f110c2cfa17a3d8822d6708582998308f298f4"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/tokenizer_config.json",
+        "role": "runtime",
+        "bytes": 42,
+        "sha256": "e52bdcf2c0167c48f939ed29bad8f2c77f4c7dd3db5a370f434bb554a252a9b7"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime/vocab.json",
+        "role": "runtime",
+        "bytes": 1583335,
+        "sha256": "26472f360be20695958c4fb31ce8e34c20b1314054e36210484e8e327f1ba458"
+      }
+    ]
+  },
+  "quality": {
+    "status": "synthetic_non_production_evidence",
+    "baseline": "FP32 output is a numerical preservation baseline, not a semantic gold translation.",
+    "corpus": {
+      "origin": "Agent-authored synthetic Japanese manga-dialogue probes; no published translations were copied.",
+      "samples": 32,
+      "sha256": "c6bf13350928da1fa488982f399cdb6eb453baf21645f206cd8be383a10d5adc"
+    },
+    "metrics": {
+      "exact_text": "16/32",
+      "mean_character_similarity": 0.8851190052949468,
+      "mean_token_similarity": 0.8616876467991503,
+      "omission_heuristic_flags": 0,
+      "deterministic_repeats": "32/32",
+      "runtime_bundle_bytes": 144594126,
+      "host_median_generation_ms": 122.6017992494235,
+      "host_rss_load_delta_mib": 344.94140625,
+      "host_max_process_rss_mib": 702.67578125
+    },
+    "known_regressions": [
+      {
+        "id": "short-03",
+        "input": "まさか…",
+        "fp32_baseline": "No puede ser.",
+        "int8_candidate": "No, no, no.",
+        "issue": "repetition"
+      }
+    ],
+    "required_gates": [
+      "Human semantic evaluation on representative manga dialogue",
+      "Android API 29 and API 36 execution",
+      "On-device latency, peak RSS, cancellation, and repeated-page profiling"
+    ]
+  }
+}
