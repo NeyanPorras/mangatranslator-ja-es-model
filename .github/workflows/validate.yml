@@ -22,7 +22,7 @@ jobs:
       RELEASE_SHA256: 7074a65066466c95187d93319588659854746734dcf76e957d5c5e11805472da
       MANIFEST_NAME: mangatranslator-ja-es-model-v0.1.1-qa.manifest.json
       MANIFEST_SHA256: 189da945d9c8f97cf614d5ca71dac3dc5f59e44602d4adaeac3cb1df79918683
-      WORK_DIR: ${{ runner.temp }}/manga-model-ci
+      WORK_DIR: /tmp/manga-model-ci
 
     steps:
       - name: Check out repository
@@ -40,6 +40,7 @@ jobs:
 
       - name: Download and verify immutable base archive
         run: |
+          mkdir -p "${{ runner.temp }}/manga-model-ci" && ln -s "${{ runner.temp }}/manga-model-ci" "$WORK_DIR"
           mkdir -p "$WORK_DIR/base" "$WORK_DIR/graphs" "$WORK_DIR/release"
           curl --fail --location --retry 3 --output "$WORK_DIR/$BASE_NAME" "$BASE_URL"
           test "$(stat --format=%s "$WORK_DIR/$BASE_NAME")" = "$BASE_BYTES"
