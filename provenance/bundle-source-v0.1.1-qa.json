@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "release_tag": "v0.1.1-qa",
+  "base_release": {
+    "tag": "v0.1.0-qa",
+    "archive_name": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip",
+    "archive_url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.0-qa/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip",
+    "archive_bytes": 144612320,
+    "archive_sha256": "10da202dfe33204d3752ef7a6eb4721de2418f5a4e3ff1750d253174f6717760",
+    "manifest_path": "manifests/v0.1.0-qa.json",
+    "root_directory": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa"
+  },
+  "source_model": {
+    "repository": "Helsinki-NLP/opus-mt-ja-es",
+    "revision": "d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "revision_url": "https://huggingface.co/Helsinki-NLP/opus-mt-ja-es/tree/d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "declared_license": "Apache-2.0",
+    "source_language": "ja",
+    "target_language": "es"
+  },
+  "runtime_requirements": {
+    "onnxruntime_android": "1.21.1",
+    "onnxruntime_extensions_android": "0.13.0"
+  },
+  "tokenizer_graphs": [
+    {
+      "source_name": "marian_source_tokenizer.onnx",
+      "archive_name": "marian_source_tokenizer.onnx",
+      "role": "source_tokenizer_graph",
+      "bytes": 1044746,
+      "sha256": "0a4d9d6ed9b773ddd770450b98d7a0d78998192413e74c3c735ea2f90421b0e0"
+    },
+    {
+      "source_name": "marian_target_detokenizer.onnx",
+      "archive_name": "marian_target_detokenizer.onnx",
+      "role": "target_detokenizer_graph",
+      "bytes": 1325372,
+      "sha256": "8199f65310027b190b416a0964cb230aae1b000c1978f5ca2db07acc57a51d16"
+    }
+  ],
+  "generator": {
+    "path": "scripts/build_ortx_marian_tokenizers.py",
+    "sha256": "672d6609515bf335769f739e5443ff650dd0279304aa9792a1e9fbd242924939",
+    "proof_generator_sha256": "eec30d8f8cbe5b8fee16b0f281e8724c79d8a997529808c93162a4aefd75207b",
+    "requirements": {
+      "onnx": "1.17.0",
+      "numpy": "2.2.6",
+      "sentencepiece": "0.2.0"
+    },
+    "source_inputs": [
+      "runtime/source.spm",
+      "runtime/target.spm",
+      "runtime/vocab.json"
+    ],
+    "intermediate_arrays_required_at_runtime": false
+  },
+  "parity_evidence": {
+    "path": "benchmarks/tokenizer-golden-parity-v0.1.1-qa.json",
+    "source_cases": 6,
+    "source_ids_exact": "6/6",
+    "source_masks_exact": "6/6",
+    "target_cases": 4,
+    "target_decode_exact": "4/4",
+    "execution": "real_onnx_graphs",
+    "semantic_quality_claim": false,
+    "proof_summary_sha256": "fce448d141e076b5fe55dbe2d825b29ccb973ee90fdeb65c4771420e9e3ef157",
+    "full_evidence_sha256": "e7a3288e1e6d7047223e8dcc6626b493a15a1547eab6b4872617d8c7a432bcc2"
+  }
+}

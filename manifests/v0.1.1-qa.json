@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "release": {
+    "tag": "v0.1.1-qa",
+    "status": "experimental_qa_candidate",
+    "production_approved": false,
+    "release_page_url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/tag/v0.1.1-qa",
+    "manifest_url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.1-qa/mangatranslator-ja-es-model-v0.1.1-qa.manifest.json"
+  },
+  "model": {
+    "source_repository": "Helsinki-NLP/opus-mt-ja-es",
+    "source_revision": "d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "source_revision_url": "https://huggingface.co/Helsinki-NLP/opus-mt-ja-es/tree/d1693e4d2bc285d02653ff6438fe21e2b3c6025e",
+    "source_language": "ja",
+    "target_language": "es",
+    "architecture": "Marian",
+    "declared_license": "Apache-2.0",
+    "quantization": {
+      "format": "QOperator",
+      "mode": "IntegerOps",
+      "static": false,
+      "activation_type": "QUInt8",
+      "weight_type": "QInt8",
+      "per_channel": false,
+      "reduce_range": false,
+      "onnx_opset": 17,
+      "onnxruntime_validation_version": "1.21.1",
+      "ort_config_path": "provenance/ort_config.json",
+      "ort_config_sha256": "2012e7b3f7d4d5d9a8b18682b3e5ec647fe60f15e0ccd1ed62eb247f3b8b8cf7",
+      "ort_config_bytes": 763
+    },
+    "generation": {
+      "num_beams": 6,
+      "max_length": 512,
+      "decoder_start_token_id": 61917,
+      "pad_token_id": 61917,
+      "eos_token_id": 0,
+      "renormalize_logits": true
+    },
+    "runtime_requirements": {
+      "onnxruntime_android": "1.21.1",
+      "onnxruntime_extensions_android": "0.13.0"
+    },
+    "tokenizer_graphs": [
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/marian_source_tokenizer.onnx",
+        "role": "source_tokenizer_graph",
+        "bytes": 1044746,
+        "sha256": "0a4d9d6ed9b773ddd770450b98d7a0d78998192413e74c3c735ea2f90421b0e0"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/marian_target_detokenizer.onnx",
+        "role": "target_detokenizer_graph",
+        "bytes": 1325372,
+        "sha256": "8199f65310027b190b416a0964cb230aae1b000c1978f5ca2db07acc57a51d16"
+      }
+    ]
+  },
+  "asset": {
+    "name": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa.zip",
+    "url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.1-qa/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa.zip",
+    "archive_format": "zip",
+    "compression": "stored",
+    "deterministic_timestamp": "1980-01-01T00:00:00Z",
+    "root_directory": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa",
+    "bytes": 146983727,
+    "sha256": "7074a65066466c95187d93319588659854746734dcf76e957d5c5e11805472da",
+    "runtime_files_bytes": 146964244,
+    "files": [
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/LICENSE",
+        "role": "license",
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/MODEL_CARD.md",
+        "role": "model_card",
+        "bytes": 4194,
+        "sha256": "7d48452036cbd24f69644cbb6b73236b4c5b9ed12123ac393c574758ba78cca1"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/NOTICE",
+        "role": "notice",
+        "bytes": 817,
+        "sha256": "bd2cff355fd4aa1283320a151539c40299da1b2c75cd4943b633abca2f2047fa"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/config.json",
+        "role": "runtime",
+        "bytes": 1381,
+        "sha256": "8575803ec5c80a7c6ef08f0203fe2ea3c2b1dfd425d1e34364ea6550b0472cdb",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/decoder_model_merged_quantized.onnx",
+        "role": "runtime",
+        "bytes": 90193075,
+        "sha256": "945946456194f97bc2ef10cb694e70f23c4da84bcd09eb0f832baa16db787384",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/encoder_model_quantized.onnx",
+        "role": "runtime",
+        "bytes": 51198766,
+        "sha256": "a0247e2f759f9936e5a0562d4508cdb60d1351dbf8f3f6558ca316c26c9ce150",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/generation_config.json",
+        "role": "runtime",
+        "bytes": 293,
+        "sha256": "ab1d31290980dae9faa6f34bfb05d72e0a46e9f8a521dd58b088be91d19e6cf1",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/marian_source_tokenizer.onnx",
+        "role": "runtime",
+        "bytes": 1044746,
+        "sha256": "0a4d9d6ed9b773ddd770450b98d7a0d78998192413e74c3c735ea2f90421b0e0",
+        "component": "source_tokenizer_graph"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/marian_target_detokenizer.onnx",
+        "role": "runtime",
+        "bytes": 1325372,
+        "sha256": "8199f65310027b190b416a0964cb230aae1b000c1978f5ca2db07acc57a51d16",
+        "component": "target_detokenizer_graph"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/source.spm",
+        "role": "runtime",
+        "bytes": 787910,
+        "sha256": "15b2cf3eb78a63770f22f84c4530d75fd8c35709fcb7155df2ec6a38952f79e2",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/target.spm",
+        "role": "runtime",
+        "bytes": 829324,
+        "sha256": "981ffc3205f62084cd5b0d6db0f110c2cfa17a3d8822d6708582998308f298f4",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/tokenizer_config.json",
+        "role": "runtime",
+        "bytes": 42,
+        "sha256": "e52bdcf2c0167c48f939ed29bad8f2c77f4c7dd3db5a370f434bb554a252a9b7",
+        "component": "model_runtime"
+      },
+      {
+        "path": "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa/runtime/vocab.json",
+        "role": "runtime",
+        "bytes": 1583335,
+        "sha256": "26472f360be20695958c4fb31ce8e34c20b1314054e36210484e8e327f1ba458",
+        "component": "model_runtime"
+      }
+    ]
+  },
+  "quality": {
+    "status": "synthetic_non_production_evidence",
+    "baseline": "FP32 output is a numerical preservation baseline, not a semantic gold translation.",
+    "corpus": {
+      "origin": "Agent-authored synthetic Japanese manga-dialogue probes; no published translations were copied.",
+      "samples": 32,
+      "sha256": "c6bf13350928da1fa488982f399cdb6eb453baf21645f206cd8be383a10d5adc"
+    },
+    "metrics": {
+      "exact_text": "16/32",
+      "mean_character_similarity": 0.8851190052949468,
+      "mean_token_similarity": 0.8616876467991503,
+      "omission_heuristic_flags": 0,
+      "deterministic_repeats": "32/32",
+      "runtime_bundle_bytes": 144594126,
+      "host_median_generation_ms": 122.6017992494235,
+      "host_rss_load_delta_mib": 344.94140625,
+      "host_max_process_rss_mib": 702.67578125
+    },
+    "known_regressions": [
+      {
+        "id": "short-03",
+        "input": "まさか…",
+        "fp32_baseline": "No puede ser.",
+        "int8_candidate": "No, no, no.",
+        "issue": "repetition"
+      }
+    ],
+    "tokenizer_parity": {
+      "schema_version": 1,
+      "status": "runtime_parity_evidence_not_semantic_quality",
+      "execution": "real_onnx_graphs",
+      "versions": {
+        "transformers": "4.53.3",
+        "sentencepiece": "0.2.0",
+        "onnxruntime": "1.21.1",
+        "onnxruntime_extensions": "0.13.0"
+      },
+      "source": {
+        "cases": 6,
+        "exact_ids": "6/6",
+        "exact_attention_masks": "6/6"
+      },
+      "target": {
+        "cases": 4,
+        "exact_decodes": "4/4"
+      },
+      "proof_scope": "Tokenizer and detokenizer graph parity only; no translation-quality claim.",
+      "full_evidence_sha256": "e7a3288e1e6d7047223e8dcc6626b493a15a1547eab6b4872617d8c7a432bcc2"
+    },
+    "required_gates": [
+      "Human semantic evaluation on representative manga dialogue",
+      "Android API 29 and API 36 execution",
+      "On-device latency, peak RSS, cancellation, and repeated-page profiling"
+    ]
+  },
+  "derivation": {
+    "base_release_tag": "v0.1.0-qa",
+    "base_archive_url": "https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.0-qa/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip",
+    "base_archive_sha256": "10da202dfe33204d3752ef7a6eb4721de2418f5a4e3ff1750d253174f6717760",
+    "base_runtime_entries_preserved": 8,
+    "added_runtime_entries": 2
+  }
+}
