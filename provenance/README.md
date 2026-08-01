@@ -1,5 +1,5 @@
 # Provenance
 
-`bundle-source.json` is the authoritative source-to-release mapping. Every runtime file is pinned by relative model-lab path, byte size, and SHA-256. `ort_config.json` records the exact dynamic per-tensor QOperator configuration used to produce the graphs.
+`bundle-source.json` remains the authoritative mapping for `v0.1.0-qa`. `bundle-source-v0.1.1-qa.json` pins the verified base archive and the two generated tokenizer graph identities. `ort_config.json` records the dynamic per-tensor QOperator configuration used for the translation graphs.
 
-The release builder refuses missing, resized, or rehashed inputs. It does not download or regenerate the upstream model; model export and quantization remain separate, reviewable processes.
+The `v0.1.1-qa` builder first verifies every `v0.1.0-qa` archive entry, then preserves all eight runtime entries byte-for-byte and adds exactly two tokenizer graphs. It refuses missing, extra, resized, rehashed, or path-unsafe content. Model export and quantization remain separate, reviewable processes.

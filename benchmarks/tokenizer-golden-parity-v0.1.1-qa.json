@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "runtime_parity_evidence_not_semantic_quality",
+  "execution": "real_onnx_graphs",
+  "versions": {
+    "transformers": "4.53.3",
+    "sentencepiece": "0.2.0",
+    "onnxruntime": "1.21.1",
+    "onnxruntime_extensions": "0.13.0"
+  },
+  "source": {
+    "cases": 6,
+    "exact_ids": "6/6",
+    "exact_attention_masks": "6/6"
+  },
+  "target": {
+    "cases": 4,
+    "exact_decodes": "4/4"
+  },
+  "proof_scope": "Tokenizer and detokenizer graph parity only; no translation-quality claim.",
+  "full_evidence_sha256": "e7a3288e1e6d7047223e8dcc6626b493a15a1547eab6b4872617d8c7a432bcc2"
+}

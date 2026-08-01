@@ -1,4 +1,4 @@
-# MangaTranslator ja→es INT8 QA candidate
+# MangaTranslator ja→es INT8 + tokenizer graphs QA candidate
 
 ## Status
 
@@ -15,9 +15,11 @@
 | Export | ONNX opset 17 |
 | Quantization | Dynamic QOperator/IntegerOps; QUInt8 activations; QInt8 weights; per-tensor |
 | Validated host runtime | ONNX Runtime 1.21.1 |
+| Android runtime requirement | ONNX Runtime Android 1.21.1 |
+| Tokenizer custom ops | ONNX Runtime Extensions Android 0.13.0 |
 | License | Apache-2.0, as declared by the upstream model card |
 
-The release contains the encoder and merged decoder graphs, exact pinned SentencePiece and vocabulary assets, model config, and six-beam generation config. The runtime bundle is 144,594,126 bytes before archive metadata and legal documents.
+The release contains the unchanged `v0.1.0-qa` runtime entries plus source-tokenizer and target-detokenizer ONNX graphs. The graphs embed the pinned SentencePiece models and ID mappings; separate `.npy` mapping arrays are not runtime inputs.
 
 ## Intended use
 
@@ -27,6 +29,7 @@ Do not use it for safety-critical, legal, medical, or otherwise consequential tr
 
 ## Tokenization and generation requirements
 
+- Register ONNX Runtime Extensions custom ops for tokenizer and detokenizer sessions.
 - Execute the embedded SentencePiece `nmt_nfkc` normalization; platform NFKC is not a proven substitute.
 - Use the global vocabulary mapping and EOS ID 0.
 - Apply the included generation config: six beams, cache enabled, maximum length 512, pad/start ID 61917, and EOS 0.
@@ -49,6 +52,8 @@ A 32-sample, agent-authored synthetic manga-dialogue corpus compared INT8 behavi
 
 Host performance was measured on WSL2 x86_64 with four ONNX Runtime intra-op threads. It is directional evidence only and must not be presented as Android performance.
 
+The generated graphs also matched 6/6 source ID and mask cases and 4/4 target decoding cases under real host ONNX execution. This proves graph parity only, not semantic translation quality.
+
 ## Known limitations
 
 - Quantization changed half of the tested FP32 outputs.
@@ -56,6 +61,7 @@ Host performance was measured on WSL2 x86_64 with four ONNX Runtime intra-op thr
 - Similarity and omission heuristics do not measure semantic correctness.
 - The synthetic corpus does not represent manga genres, OCR noise, dialects, names, or long-tail language adequately.
 - Android ARM64/x86_64 execution, latency, memory, cancellation, and repeated-page behavior remain unvalidated.
+- ONNX Runtime Extensions Android custom-op loading remains unvalidated on API 29 and API 36.
 
 ## Required acceptance gates
 
@@ -68,4 +74,4 @@ Host performance was measured on WSL2 x86_64 with four ONNX Runtime intra-op thr
 
 Source model: <https://huggingface.co/Helsinki-NLP/opus-mt-ja-es/tree/d1693e4d2bc285d02653ff6438fe21e2b3c6025e>
 
-Exact source hashes, quantization settings, and evidence hashes are recorded under [`provenance/`](provenance/) and [`benchmarks/`](benchmarks/).
+Exact source hashes, quantization settings, graph identities, and evidence hashes are recorded under [`provenance/`](provenance/) and [`benchmarks/`](benchmarks/).

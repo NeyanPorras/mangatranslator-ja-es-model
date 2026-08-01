@@ -11,3 +11,7 @@ OPUS-MT training project: https://github.com/Helsinki-NLP/OPUS-MT-train
 The quantized ONNX graphs and release metadata are distributed under the
 Apache License 2.0. This NOTICE does not imply production approval or quality
 certification by Helsinki-NLP.
+
+Release v0.1.1-qa adds generated tokenizer graphs intended for execution with
+ONNX Runtime 1.21.1 and ONNX Runtime Extensions 0.13.0. Those runtime libraries
+are dependencies and are not redistributed in the model archive.
