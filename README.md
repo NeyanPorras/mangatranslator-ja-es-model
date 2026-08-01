@@ -53,6 +53,19 @@ python3 -m unittest discover -s tests -v
 
 The builder verifies the complete base release and both graph identities before producing a deterministic archive. Model binaries, generated graphs, and release archives are intentionally excluded from Git.
 
+### Automated validation
+
+`.github/workflows/validate.yml` is the authoritative clean-run recipe. It downloads and verifies the pinned `v0.1.0-qa` archive, regenerates both tokenizer graphs, rebuilds `v0.1.1-qa`, and checks the exact archive and manifest hashes.
+
+For a strict local test run, set `MANGA_MODEL_REQUIRE_FIXTURES=1` and provide these paths:
+
+- `MANGA_MODEL_V010_ARCHIVE`
+- `MANGA_MODEL_V010_RUNTIME`
+- `MANGA_MODEL_TOKENIZER_GRAPH_DIR`
+- `MANGA_MODEL_V011_PAYLOAD_DIR`
+
+Without strict mode, fixture-dependent tests may skip so metadata-only contributors can still run the remaining unit tests.
+
 ## License
 
 The upstream model card declares Apache-2.0. This repository, quantized graphs, and release metadata are distributed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.

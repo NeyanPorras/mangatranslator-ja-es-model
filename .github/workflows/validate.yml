@@ -1,0 +1,76 @@
+name: Validate release
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_NAME: mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip
+      BASE_URL: https://github.com/NeyanPorras/mangatranslator-ja-es-model/releases/download/v0.1.0-qa/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip
+      BASE_BYTES: "144612320"
+      BASE_SHA256: 10da202dfe33204d3752ef7a6eb4721de2418f5a4e3ff1750d253174f6717760
+      RELEASE_NAME: mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa.zip
+      RELEASE_SHA256: 7074a65066466c95187d93319588659854746734dcf76e957d5c5e11805472da
+      MANIFEST_NAME: mangatranslator-ja-es-model-v0.1.1-qa.manifest.json
+      MANIFEST_SHA256: 189da945d9c8f97cf614d5ca71dac3dc5f59e44602d4adaeac3cb1df79918683
+      WORK_DIR: ${{ runner.temp }}/manga-model-ci
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+
+      - name: Install pinned build dependencies
+        run: python -m pip install --disable-pip-version-check --require-hashes --requirement requirements-ci.txt
+
+      - name: Download and verify immutable base archive
+        run: |
+          mkdir -p "$WORK_DIR/base" "$WORK_DIR/graphs" "$WORK_DIR/release"
+          curl --fail --location --retry 3 --output "$WORK_DIR/$BASE_NAME" "$BASE_URL"
+          test "$(stat --format=%s "$WORK_DIR/$BASE_NAME")" = "$BASE_BYTES"
+          echo "$BASE_SHA256  $WORK_DIR/$BASE_NAME" | sha256sum --check --strict -
+          python -m zipfile --extract "$WORK_DIR/$BASE_NAME" "$WORK_DIR/base"
+
+      - name: Rebuild tokenizer graphs and release
+        run: |
+          python scripts/build_ortx_marian_tokenizers.py \
+            --runtime-dir "$WORK_DIR/base/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime" \
+            --output-dir "$WORK_DIR/graphs"
+          echo "0a4d9d6ed9b773ddd770450b98d7a0d78998192413e74c3c735ea2f90421b0e0  $WORK_DIR/graphs/marian_source_tokenizer.onnx" | sha256sum --check --strict -
+          echo "8199f65310027b190b416a0964cb230aae1b000c1978f5ca2db07acc57a51d16  $WORK_DIR/graphs/marian_target_detokenizer.onnx" | sha256sum --check --strict -
+          python scripts/build_release_v011.py \
+            --base-archive "$WORK_DIR/$BASE_NAME" \
+            --graph-dir "$WORK_DIR/graphs" \
+            --output-dir "$WORK_DIR/release" \
+            --manifest-output "$WORK_DIR/generated-manifest.json"
+
+      - name: Verify deterministic identities and tests
+        env:
+          MANGA_MODEL_REQUIRE_FIXTURES: "1"
+          MANGA_MODEL_V010_ARCHIVE: ${{ runner.temp }}/manga-model-ci/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip
+          MANGA_MODEL_V010_RUNTIME: ${{ runner.temp }}/manga-model-ci/base/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime
+          MANGA_MODEL_TOKENIZER_GRAPH_DIR: ${{ runner.temp }}/manga-model-ci/graphs
+          MANGA_MODEL_V011_PAYLOAD_DIR: ${{ runner.temp }}/manga-model-ci/release
+        run: |
+          echo "$RELEASE_SHA256  $WORK_DIR/release/$RELEASE_NAME" | sha256sum --check --strict -
+          echo "$MANIFEST_SHA256  $WORK_DIR/generated-manifest.json" | sha256sum --check --strict -
+          cmp manifests/v0.1.1-qa.json "$WORK_DIR/generated-manifest.json"
+          python -m unittest discover -s tests -v
+          python scripts/verify_release.py \
+            --archive "$WORK_DIR/release/$RELEASE_NAME" \
+            --manifest "$WORK_DIR/release/$MANIFEST_NAME"

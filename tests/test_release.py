@@ -4,6 +4,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -19,11 +20,27 @@ from verify_release import verify  # noqa: E402
 TAG = "v0.1.1-qa"
 ASSET = "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.1-qa.zip"
 RELEASE_MANIFEST = f"mangatranslator-ja-es-model-{TAG}.manifest.json"
-PAYLOAD = Path("/tmp/manga-model-release-v011")
-LAB = Path("/tmp/manga-tokenizer-lab")
-BASE_ARCHIVE = LAB / "download" / "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip"
-GRAPH_DIR = LAB / "evidence" / "ortx-graphs"
-BASE_RUNTIME = LAB / "extracted" / "mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa" / "runtime"
+PAYLOAD = Path(os.environ.get("MANGA_MODEL_V011_PAYLOAD_DIR", "/tmp/manga-model-release-v011"))
+BASE_ARCHIVE = Path(
+    os.environ.get(
+        "MANGA_MODEL_V010_ARCHIVE",
+        "/tmp/manga-tokenizer-lab/download/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa.zip",
+    )
+)
+GRAPH_DIR = Path(
+    os.environ.get("MANGA_MODEL_TOKENIZER_GRAPH_DIR", "/tmp/manga-tokenizer-lab/evidence/ortx-graphs")
+)
+BASE_RUNTIME = Path(
+    os.environ.get(
+        "MANGA_MODEL_V010_RUNTIME",
+        "/tmp/manga-tokenizer-lab/extracted/mangatranslator-ja-es-int8-pertensor-qoperator-v0.1.0-qa/runtime",
+    )
+)
+REQUIRE_FIXTURES = os.environ.get("CI", "").lower() == "true" or os.environ.get(
+    "MANGA_MODEL_REQUIRE_FIXTURES"
+) == "1"
+EXPECTED_ARCHIVE_SHA256 = "7074a65066466c95187d93319588659854746734dcf76e957d5c5e11805472da"
+EXPECTED_MANIFEST_SHA256 = "189da945d9c8f97cf614d5ca71dac3dc5f59e44602d4adaeac3cb1df79918683"
 
 
 def sha256(path: Path) -> str:
@@ -35,20 +52,42 @@ def sha256(path: Path) -> str:
 
 
 class ReleaseTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        if not (PAYLOAD / ASSET).is_file():
-            raise unittest.SkipTest("v0.1.1 release payload is not available")
+    def require_file(self, path: Path, description: str) -> None:
+        if path.is_file():
+            return
+        message = f"{description} is unavailable: {path}"
+        if REQUIRE_FIXTURES:
+            self.fail(message)
+        self.skipTest(message)
+
+    def require_directory(self, path: Path, description: str) -> None:
+        if path.is_dir():
+            return
+        message = f"{description} is unavailable: {path}"
+        if REQUIRE_FIXTURES:
+            self.fail(message)
+        self.skipTest(message)
+
+    def require_dependencies(self, names: tuple[str, ...]) -> None:
+        missing = [name for name in names if importlib.util.find_spec(name) is None]
+        if not missing:
+            return
+        message = f"required Python dependencies are unavailable: {', '.join(missing)}"
+        if REQUIRE_FIXTURES:
+            self.fail(message)
+        self.skipTest(message)
 
     def test_release_payload_verifies(self) -> None:
+        self.require_file(PAYLOAD / ASSET, "v0.1.1 release archive")
+        self.require_file(PAYLOAD / RELEASE_MANIFEST, "v0.1.1 release manifest")
         result = verify(PAYLOAD / ASSET, PAYLOAD / RELEASE_MANIFEST)
         self.assertEqual("verified", result["status"])
         self.assertEqual(13, result["files"])
         self.assertEqual(146964244, result["runtime_files_bytes"])
 
     def test_rebuild_is_byte_identical(self) -> None:
-        if not BASE_ARCHIVE.is_file() or not GRAPH_DIR.is_dir():
-            self.skipTest("verified base archive or tokenizer graphs are unavailable")
+        self.require_file(BASE_ARCHIVE, "verified v0.1.0 base archive")
+        self.require_directory(GRAPH_DIR, "generated tokenizer graph directory")
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "release"
             manifest = Path(directory) / "manifest.json"
@@ -69,14 +108,17 @@ class ReleaseTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
             )
-            self.assertEqual(sha256(PAYLOAD / ASSET), sha256(output / ASSET))
-            self.assertEqual((PAYLOAD / RELEASE_MANIFEST).read_bytes(), (output / RELEASE_MANIFEST).read_bytes())
+            self.assertEqual(EXPECTED_ARCHIVE_SHA256, sha256(output / ASSET))
+            self.assertEqual(EXPECTED_MANIFEST_SHA256, sha256(output / RELEASE_MANIFEST))
             self.assertEqual((REPO_ROOT / "manifests" / f"{TAG}.json").read_bytes(), manifest.read_bytes())
 
     def test_tokenizer_generator_is_byte_identical_and_emits_no_arrays(self) -> None:
         dependencies = ("numpy", "onnx", "sentencepiece")
-        if any(importlib.util.find_spec(name) is None for name in dependencies) or not BASE_RUNTIME.is_dir():
-            self.skipTest("tokenizer generator dependencies or inputs are unavailable")
+        self.require_dependencies(dependencies)
+        self.require_directory(BASE_RUNTIME, "extracted v0.1.0 runtime")
+        provenance = json.loads(
+            (REPO_ROOT / "provenance" / "bundle-source-v0.1.1-qa.json").read_text(encoding="utf-8")
+        )
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory)
             subprocess.run(
@@ -93,11 +135,13 @@ class ReleaseTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(
-                sorted(path.name for path in GRAPH_DIR.glob("*.onnx")),
+                sorted(item["source_name"] for item in provenance["tokenizer_graphs"]),
                 sorted(path.name for path in output.iterdir()),
             )
-            for expected in GRAPH_DIR.glob("*.onnx"):
-                self.assertEqual(sha256(expected), sha256(output / expected.name))
+            for expected in provenance["tokenizer_graphs"]:
+                graph = output / expected["source_name"]
+                self.assertEqual(expected["bytes"], graph.stat().st_size)
+                self.assertEqual(expected["sha256"], sha256(graph))
 
     def test_v010_runtime_entries_are_unchanged_and_only_two_are_added(self) -> None:
         base = json.loads((REPO_ROOT / "manifests" / "v0.1.0-qa.json").read_text(encoding="utf-8"))
@@ -121,6 +165,8 @@ class ReleaseTests(unittest.TestCase):
         )
 
     def test_verifier_rejects_missing_extra_unsafe_and_hash_mismatch(self) -> None:
+        self.require_file(PAYLOAD / ASSET, "v0.1.1 release archive")
+        self.require_file(PAYLOAD / RELEASE_MANIFEST, "v0.1.1 release manifest")
         manifest = json.loads((PAYLOAD / RELEASE_MANIFEST).read_text(encoding="utf-8"))
         mutations = []
 
@@ -177,6 +223,11 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(2, len(provenance["tokenizer_graphs"]))
         self.assertEqual(sha256(SCRIPTS / "build_ortx_marian_tokenizers.py"), provenance["generator"]["sha256"])
         self.assertFalse(provenance["generator"]["intermediate_arrays_required_at_runtime"])
+
+    def test_committed_manifest_has_expected_identity(self) -> None:
+        self.assertEqual(EXPECTED_MANIFEST_SHA256, sha256(REPO_ROOT / "manifests" / f"{TAG}.json"))
+        manifest = json.loads((REPO_ROOT / "manifests" / f"{TAG}.json").read_text(encoding="utf-8"))
+        self.assertEqual(EXPECTED_ARCHIVE_SHA256, manifest["asset"]["sha256"])
 
 
 if __name__ == "__main__":
